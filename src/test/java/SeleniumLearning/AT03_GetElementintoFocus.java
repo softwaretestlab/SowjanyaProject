@@ -3,15 +3,19 @@ package SeleniumLearning;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class AT02_LocatorsLearning {
+public class AT03_GetElementintoFocus {
+
+
     @Test
-    public void NavHn() throws IOException {
+    public void foucsElement() throws IOException {
         //From WebDriverManager we are settingup chromedriver
         WebDriverManager.chromedriver().setup();
         // chrome browser will be opened
@@ -33,7 +37,20 @@ public class AT02_LocatorsLearning {
         driver.findElement(By.cssSelector("#email_address")).sendKeys("test@gmail.com");
         //xpath
         driver.findElement(By.xpath("//*[@id='password']")).sendKeys("test@gmail.com");
-        //partial link text-- here we give a bit of link text
-        driver.findElement(By.partialLinkText("Help & Support")).click();
+        // implict wait
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        // Element not getting clicked as it is not within Viewport
+
+        //  Try to use JavascriptExecutor to bring the element within the Viewport:
+
+        WebElement myElement = driver.findElement(By.xpath("//a[contains(text(),'Newsletter sign up')]"));
+        JavascriptExecutor jse2 = (JavascriptExecutor) driver;
+        jse2.executeScript("arguments[0].scrollIntoView()", myElement);
+        // implict wait
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        //now as the element is in focus , lets click on it
+                 //xpath link text-- here we give a bit of link text
+        driver.findElement(By.xpath("//a[contains(text(),'Newsletter sign up')]")).click();
     }
 }
